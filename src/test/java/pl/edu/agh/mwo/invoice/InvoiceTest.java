@@ -136,7 +136,47 @@ public class InvoiceTest {
 		Assert.assertNotEquals(number1,Matchers.lessThan(number2));
 		
 		
-		}
+		}}
+	
+	@Test
+	public void testPrintedInvoiceContainsNumber(){
+		String printedInvoice=invoice.getAsText();
+		String number=invoice.getNumber().toString();
+		Assert.assertThat(printedInvoice,Matchers.containsString("nr:"+number));
 	}
 	
-}
+	@Test
+	public void testPrintedInvoiceContainsProduct() {
+
+		invoice.addProduct(new TaxFreeProduct("Chleb", new BigDecimal("5")), 2);
+		String printedInvoice=invoice.getAsText();
+		Assert.assertThat(printedInvoice,Matchers.containsString("Chleb 2 5"));
+	}
+	@Test
+	public void testPrintedInvoiceContainsTheNumberOfProducts() {
+
+		invoice.addProduct(new TaxFreeProduct("Chleb", new BigDecimal("5")), 2);
+		invoice.addProduct(new OtherProduct("Gumowa Kaczka", new BigDecimal("5")), 2);
+		invoice.addProduct(new DairyProduct("Prawdziwa Kaczka", new BigDecimal("5")), 2);
+		String printedInvoice=invoice.getAsText();
+		Assert.assertThat(printedInvoice,Matchers.containsString("Liczba pozycji: 3"));
+	}
+	@Test
+	public void testEachProductIsInNewline() {
+
+		invoice.addProduct(new TaxFreeProduct("Chleb", new BigDecimal("5")), 2);
+		invoice.addProduct(new OtherProduct("Frytki", new BigDecimal("6.50")), 3);
+
+		Assert.assertThat(invoice.getAsText(),Matchers.containsString("Chleb 2 5\nFrytki 3 6.50"));
+	}
+	@Test
+	public void testAddingTheSameProductToInvoiceTwice() {
+
+		invoice.addProduct(new TaxFreeProduct("Chleb", new BigDecimal("5")));
+		invoice.addProduct(new TaxFreeProduct("Chleb", new BigDecimal("5")));
+
+		Assert.assertThat(invoice.getAsText(),Matchers.containsString("Chleb 2 5"));
+	}
+	}
+
+
