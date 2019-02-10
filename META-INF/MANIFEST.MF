@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Desktop_tdd-invoice
+Bundle-SymbolicName: Desktop_tdd-invoice
+Bundle-Version: 1.0.0.qualifier
+Export-Package: pl.edu.agh.mwo.invoice,
+ pl.edu.agh.mwo.invoice.product
